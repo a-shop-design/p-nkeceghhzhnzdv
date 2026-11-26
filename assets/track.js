@@ -74,5 +74,16 @@
   });
   window.addEventListener('pagehide', leave);
 
+  // 人が操作した印（巡回ロボットとの見分けに使う）。最初の1回だけ送る
+  var acted = false;
+  function act() {
+    if (acted) return;
+    acted = true;
+    send({ ev: 'act' });
+  }
+  ['touchstart', 'pointerdown', 'keydown', 'wheel'].forEach(function (n) {
+    window.addEventListener(n, act, { passive: true, once: true });
+  });
+
   send({ ev: 'view' });
 })();
